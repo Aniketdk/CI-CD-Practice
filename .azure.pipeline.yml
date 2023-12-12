@@ -1,0 +1,13 @@
+trigger:
+  - Production # Define the branch that triggers the pipeline
+
+pool:
+  vmImage: "ubuntu-latest" # Use an Ubuntu agent; you can change this based on your requirements
+
+jobs:
+  - job: Hello World from Production
+    displayName: "Hello, World! Job"
+
+    steps:
+      - script: echo 'Hello, World from Production!'
+        displayName: "Print Hello, World!"
