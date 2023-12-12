@@ -1,0 +1,8 @@
+name: hello-world
+on: push
+jobs:
+  Hello-World-from-Production:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello World..!
+        run: echo "Hello world...1"
