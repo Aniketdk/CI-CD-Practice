@@ -1,8 +1,8 @@
 name: Hello-World
 on: push
 jobs:
-  my-job:
+  Hello-World-from-Stage:
     runs-on: ubuntu-latest
     steps:
-      - name: Hello World from Stage
-        run: echo "Hello World from Stage....!"
+      - name: Hello World..!
+        run: echo "Hello world...1"
