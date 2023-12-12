@@ -1,8 +1,11 @@
 name: hello-world
-on: push
+
+on:
+  push:
+
 jobs:
-  Hello-World-from-Production:
+  Hello-World-from-Develop:
     runs-on: ubuntu-latest
     steps:
       - name: Hello World..!
-        run: echo "Hello world...1"
+        run: echo
