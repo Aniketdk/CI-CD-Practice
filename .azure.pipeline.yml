@@ -5,9 +5,9 @@ pool:
   vmImage: "ubuntu-latest" # Use an Ubuntu agent; you can change this based on your requirements
 
 jobs:
-  - job: HelloWorldJob
+  - job: Hello World from Stage
     displayName: "Hello, World! Job"
 
     steps:
-      - script: echo 'Hello, World!'
+      - script: echo 'Hello, World from Stage!'
         displayName: "Print Hello, World!"
