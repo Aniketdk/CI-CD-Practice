@@ -1,0 +1,6 @@
+name: Build
+on: push
+jobs:
+  runs-on: ubuntu-latest
+  steps:
+    -run: echo "hello world from Develop"
