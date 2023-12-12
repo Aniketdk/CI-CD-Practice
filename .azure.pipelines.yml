@@ -1,7 +1,5 @@
 trigger:
-  - Develop
-  - stage
-  - Production # Define the branch that triggers the pipeline
+  - Develop # Define the branch that triggers the pipeline
 
 pool:
   vmImage: "ubuntu-latest" # Use an Ubuntu agent; you can change this based on your requirements
