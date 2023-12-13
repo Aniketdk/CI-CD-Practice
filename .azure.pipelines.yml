@@ -1,20 +1,27 @@
-name: cicd_ci
-
 trigger:
-  branches:
-    include:
-      - Develop
+  - develop
+  - stage
+  - production
 
-stages:
-  - stage: CI_Checks
-    jobs:
-      - job:
-        displayName: yamllint_checks
-        pool:
-          vmImage: "ubuntu-latest"
-        steps:
-          - script: |
-              python -m pip install --upgrade pip
-              pip install yamllint
-              yamllint -d "{extends: relaxed, rules: {line-length: {max: 200}, new-line-at-end-of-file: disable, new-lines: disable}}" .
-            displayName: "YAML Lint Checks"
+pr:
+  - "*"
+
+jobs:
+  - job: HelloWorldDeploy
+    pool:
+      vmImage: "ubuntu-latest"
+
+    steps:
+      - checkout: self
+
+      - script: echo "Hello World - Develop"
+        displayName: "Display Hello World on Develop"
+        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+
+      - script: echo "Hello World - Stage"
+        displayName: "Display Hello World on Stage"
+        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/stage'))
+
+      - script: echo "Hello World - Production"
+        displayName: "Display Hello World on Production"
+        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/production'))
