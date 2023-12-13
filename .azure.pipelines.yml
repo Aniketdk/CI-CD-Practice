@@ -1,13 +1,20 @@
+name: cicd_ci
+
 trigger:
-  - Develop # Define the branch that triggers the pipeline
+  branches:
+    include:
+      - Develop
 
-pool:
-  vmImage: "ubuntu-latest" # Use an Ubuntu agent; you can change this based on your requirements
-
-jobs:
-  - job: HelloWorldJob
-    displayName: "Hello, World....!"
-
-    steps:
-      - script: echo 'Hello, World....!'
-        displayName: "Print Hello, World!"
+stages:
+  - stage: CI_Checks
+    jobs:
+      - job:
+        displayName: yamllint_checks
+        pool:
+          vmImage: "ubuntu-latest"
+        steps:
+          - script: |
+              python -m pip install --upgrade pip
+              pip install yamllint
+              yamllint -d "{extends: relaxed, rules: {line-length: {max: 200}, new-line-at-end-of-file: disable, new-lines: disable}}" .
+            displayName: "YAML Lint Checks"
