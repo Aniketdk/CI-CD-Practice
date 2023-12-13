@@ -1,0 +1,27 @@
+trigger:
+  - develop
+  - stage
+  - production
+
+pr:
+  - "*"
+
+jobs:
+  - job: HelloWorldDeploy
+    pool:
+      vmImage: "ubuntu-latest"
+
+    steps:
+      - checkout: self
+
+      - script: echo "Hello World - Develop"
+        displayName: "Display Hello World on Develop"
+        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+
+      - script: echo "Hello World - Stage"
+        displayName: "Display Hello World on Stage"
+        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/stage'))
+
+      - script: echo "Hello World - Production"
+        displayName: "Display Hello World on Production"
+        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/production'))
