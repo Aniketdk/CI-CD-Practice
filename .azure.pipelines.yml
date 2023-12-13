@@ -6,8 +6,8 @@ pool:
 
 jobs:
   - job: HelloWorldJob
-    displayName: "Hello, World! Job"
+    displayName: "Hello, World....!"
 
     steps:
-      - script: echo 'Hello, World!'
+      - script: echo 'Hello, World....!'
         displayName: "Print Hello, World!"
