@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - strategy  # adjust this to match your main branch name
+      - Stage  # adjust this to match your main branch name
       - Develop
       
 jobs:
