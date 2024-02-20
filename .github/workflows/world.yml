@@ -32,10 +32,15 @@ jobs:
         run: |
          uname
         #For Approval
-      - name: Manual approval
+      - name: Wait for approval
         if: github.event_name == 'workflow_dispatch'
-        run: |
-          echo "Please review the changes and approve this deployment."
+        id: approval
+        uses: "marvinpinto/action-automatic-approvals@v1"
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          approval-comment: "Approve deployment? (Approve/Reject)"
+          wait-hours: 24
+          issue-number: ${{ steps.create_approval_issue.outputs.issue_number }}
    
 
   deploy:
