@@ -46,14 +46,16 @@ jobs:
         #For Approval
       - name: Wait for approval
         if: github.event_name == 'workflow_dispatch'
-        id: approval
-        uses: "marvinpinto/action-automatic-approvals@v1"
-        with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-          approval-comment: "Approve deployment? (Approve/Reject)"
-          wait-hours: 24
-          issue-number: ${{ steps.create_approval_issue.outputs.issue_number }}
-   
+        id: wait-for-approval
+        run: |
+          while true; do
+            RESPONSE=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/issues/${{ steps.create_approval_issue.outputs.issue_number }}")
+            if [[ $(echo "$RESPONSE" | jq -r '.state') == "closed" ]]; then
+              echo "Approval received"
+              break
+            fi
+            sleep 60
+          done
 
   deploy:
     name: Deploy
