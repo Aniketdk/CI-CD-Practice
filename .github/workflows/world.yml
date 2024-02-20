@@ -43,7 +43,7 @@ jobs:
           ISSUE_NUMBER=$(echo "$RESPONSE" | jq -r '.number')
           echo "::set-output name=issue_number::$ISSUE_NUMBER"
 
-        #For Approval
+    #For Approval
       - name: Wait for approval
         if: github.event_name == 'workflow_dispatch'
         id: wait-for-approval
