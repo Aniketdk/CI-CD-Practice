@@ -35,7 +35,7 @@ jobs:
       - name: Wait for approval
         if: github.event_name == 'workflow_dispatch'
         id: approval
-        uses: "Aniketdk/CI-CD-approvals@v1"
+        uses: "Aniketdk/CI-CD"
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
           approval-comment: "Approve deployment? (Approve/Reject)"
