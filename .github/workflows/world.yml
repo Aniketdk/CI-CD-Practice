@@ -31,11 +31,23 @@ jobs:
       - name: Run tests
         run: |
          uname
+
+        # Create an issue for approval
+      - name: Create approval issue
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          ISSUE_TITLE="Deployment Approval"
+          ISSUE_BODY="Please approve or reject this deployment."
+          RESPONSE=$(curl -X POST -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -d '{"title":"'"$ISSUE_TITLE"'", "body":"'"$ISSUE_BODY"'"}' "https://api.github.com/repos/${{ github.repository }}/issues")
+          echo "Approval issue created: $RESPONSE"
+          ISSUE_NUMBER=$(echo "$RESPONSE" | jq -r '.number')
+          echo "::set-output name=issue_number::$ISSUE_NUMBER"
+
         #For Approval
       - name: Wait for approval
         if: github.event_name == 'workflow_dispatch'
         id: approval
-        uses: "Aniketdk/CI-CD"
+        uses: "marvinpinto/action-automatic-approvals@v1"
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
           approval-comment: "Approve deployment? (Approve/Reject)"
