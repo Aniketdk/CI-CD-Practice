@@ -2,13 +2,9 @@ on:
   pull_request:
     types:
       - opened
-    branches:
-      - 'Stage'
-
-
 jobs:
-  approved:
-    if: github.event.review.state == 'APPROVED'
+  run_if:
+    if:  startsWith(github.head_ref, 'Stage/')
     runs-on: ubuntu-latest
     steps:
-      - run: echo "This PR was approved"
+      - run: echo "The head of this PR starts with 'releases/'"
