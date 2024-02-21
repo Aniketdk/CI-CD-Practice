@@ -1,9 +1,14 @@
 on:
-  pull_request:
-    types: [review_requested]
+  issues:
+    types:
+      - opened
+
 jobs:
-  specific_review_requested:
+  label_issue:
     runs-on: ubuntu-latest
-    if: ${{ github.event.requested_team.name == 'octo-team'}}
     steps:
-      - run: echo 'A review from octo-team was requested'
+      - env:
+          GH_TOKEN: ${{ secrets.MY_TOKEN }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+        run: |
+          gh issue edit $ISSUE_URL --add-label "triage"
