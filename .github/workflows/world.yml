@@ -3,9 +3,9 @@ name: Deployment Workflow
 on:
   push:
     branches:
-      - develop
-      - stage
-      - production
+      - Stage
+      - Develop
+      - Production
 
 jobs:
   
