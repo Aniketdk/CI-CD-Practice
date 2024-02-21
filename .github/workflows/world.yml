@@ -1,16 +1,37 @@
-name: Pull Request
+name: Pull Request Approval
 
 on:
-  push:
-    branches:
-      - Stage
+  pull_request:
+    types: [opened, synchronize]
 
 jobs:
-  build:
+  pr_approval:
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
-      # Add more steps as needed to build, test, etc.
+        
+      # Additional steps can be added here, such as building and testing the code
+      
+      - name: Request PR review
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data: pullRequest } = await github.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            });
+            await github.pulls.requestReviewers({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              reviewers: ['username1', 'username2'] // Add the GitHub usernames of reviewers here
+            });
+      
+      - name: Wait for approval
+        uses: bflad/wait-for-approval-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
