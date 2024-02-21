@@ -1,70 +1,11 @@
 name: CI/CD Pipeline
 
 on:
-  push:
-    branches:
-      - Stage  # adjust this to match your main branch name
-      
+  pull_request:
+    types: [review_requested]
 jobs:
-  build:
-    name: Build
+  specific_review_requested:
     runs-on: ubuntu-latest
-
+    if: ${{ github.event.requested_team.name == 'octo-team'}}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Build project
-        run: |
-          sudo apt-get update
-
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    needs: [build] 
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Run tests
-        run: |
-         uname
-
-        # Create an issue for approval
-      - name: Create approval issue
-        if: github.event_name == 'workflow_dispatch'
-        run: |
-          ISSUE_TITLE="Deployment Approval"
-          ISSUE_BODY="Please approve or reject this deployment."
-          RESPONSE=$(curl -X POST -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -d '{"title":"'"$ISSUE_TITLE"'", "body":"'"$ISSUE_BODY"'"}' "https://api.github.com/repos/${{ github.repository }}/issues")
-          echo "Approval issue created: $RESPONSE"
-          ISSUE_NUMBER=$(echo "$RESPONSE" | jq -r '.number')
-          echo "::set-output name=issue_number::$ISSUE_NUMBER"
-
-    #For Approval
-      - name: Wait for approval
-        if: github.event_name == 'workflow_dispatch'
-        id: wait-for-approval
-        run: |
-          while true; do
-            RESPONSE=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/issues/${{ steps.create_approval_issue.outputs.issue_number }}")
-            if [[ $(echo "$RESPONSE" | jq -r '.state') == "closed" ]]; then
-              echo "Approval received"
-              break
-            fi
-            sleep 60
-          done
-
-  deploy:
-    name: Deploy
-    runs-on: ubuntu-latest
-    needs: [Test]  # ensures the deploy step runs after build and test
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Deploy application
-        run: |
-          exit
+      - run: echo 'A review from octo-team was requested'
