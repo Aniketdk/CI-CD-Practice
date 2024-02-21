@@ -1,11 +1,16 @@
-name: CI/CD Pipeline
+name: Pull Request
 
 on:
-  pull_request:
-    types: [review_requested]
+  push:
+    branches:
+      - Stage
+
 jobs:
-  specific_review_requested:
+  build:
     runs-on: ubuntu-latest
-    if: ${{ github.event.requested_team.name == 'octo-team'}}
+
     steps:
-      - run: echo 'A review from octo-team was requested'
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Add more steps as needed to build, test, etc.
