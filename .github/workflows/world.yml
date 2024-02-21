@@ -1,11 +1,35 @@
-name: hello-world
+name: Deployment Workflow
 
 on:
   push:
+    branches:
+      - Stage
+      - Develop
+      - Production
 
 jobs:
-  Hello-World-from-Stage:
+  
+  deploy_stage:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/stage'
+    
     steps:
-      - name: Hello World..!
-        run: echo "Hello world...!"
+      - name: Deploy to Staging Environment
+        run: echo "Deploying to Staging Environment"
+
+  deploy_dev:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    
+    steps:
+      - name: Deploy to Development Environment
+        run: echo "Deploying to Development Environment"
+
+  deploy_production:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/production'
+    
+    steps:
+      - name: Deploy to Production Environment
+        run: echo "Deploying to Production Environment"
+
